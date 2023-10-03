@@ -1,0 +1,18 @@
+# MongoDB credentials
+MONGO_DEV_URL = 
+
+MONGO_PROD_URL = 
+
+NODE_ENV =  n/a
+
+# Secret key 
+SECRET_KEY = 
+
+# IPs & PORT
+PORT = 5000
+
+DEV_FRONTEND_IP = http://localhost:3000 
+DEV_BACKEND_IP = localhost
+
+PROD_FRONTEND_IP = 
+PROD_BACKEND_IP = 
