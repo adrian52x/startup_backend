@@ -12,8 +12,8 @@ const userSchema = new Schema({
     isMentor: { type: Boolean, default: false },
     isEmailConfirmed: { type: Boolean, default: null },
     isVerified: { type: Boolean, default: null },
-    description: { type: String, default: null }
-    // img
+    description: { type: String, default: null },
+    img: { type: String, default: null }
     // video
 });
 
