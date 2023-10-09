@@ -8,6 +8,7 @@ const userSchema = new Schema({
     password: { type: String, required: true },
     phone: { type: Number, default: null }, // required ??
     profession: { type: String, default: null }, // required???
+    category: { type: [String], default: null },
     rating: { type: Number, default: null },
     isMentor: { type: Boolean, default: false },
     isEmailConfirmed: { type: Boolean, default: null },
