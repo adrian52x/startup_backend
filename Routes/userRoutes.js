@@ -7,17 +7,71 @@ import bcrypt from "bcryptjs";
 
 
 
-// Get all users
+// // Get all mentors
+// router.get("/api/mentors", async (req, res) => {
+//     try {
+//         const { search, category } = req.query;
+//         let query = { isMentor: true };
+//         if (search || category) {
+//             query = {
+//                 ...query,
+//                 // $or: [
+//                 //     { firstName: search },
+//                 //     { lastName: search }
+//                 // ],
+//                 firstName: search ,
+//                 //category: category
+//             };
+//         }
+//         console.log(query);
+//         const mentors = await User.find(query).select("-__v");
+//         res.status(200).json(mentors) 
+//     } catch (error) {
+//         res.status(400).json({ message: "something wrong, please try again." })
+//     }
+// });
+
+// Get all mentors
 router.get("/api/mentors", async (req, res) => {
     try {
-        const mentors = await User.find({ isMentor: true }).select("-__v");
+        const { search, category } = req.query;
+        
+
+        let query = { isMentor: true };
+        if (search) {
+            query = {
+                ...query,
+                $or: [
+                    { firstName: { $regex: search, $options: 'i' } },
+                    { lastName: { $regex: search, $options: 'i' } }
+                ],
+            };
+        }
+        if (category) {
+            query.category = { $in: [category] };
+        }
+        console.log(query);
+        const mentors = await User.find(query).select("-__v");
         res.status(200).json(mentors) 
     } catch (error) {
         res.status(400).json({ message: "something wrong, please try again." })
     }
 });
 
-// Get all mentors
+// Get mentor by ID
+router.get("/api/mentor/:id", async (req, res) => {
+    try {
+      const mentor = await User.findOne({ _id: req.params.id, isMentor: true }).select("-__v");
+      if (!mentor) {
+        return res.status(404).json({ message: "Mentor not found" });
+      }
+      res.status(200).json(mentor);
+    } catch (error) {
+      res.status(400).json({ message: "Something went wrong, please try again." });
+    }
+});
+
+// Get all users
 router.get("/api/users", async (req, res) => {
     try {
         const users = await User.find().select("-__v");
