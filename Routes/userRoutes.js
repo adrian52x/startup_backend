@@ -143,7 +143,7 @@ router.post("/api/login", async (req, res) => {
             res.status(400).send("All input is required");
         }
         // Validate if user exist in our database
-        const user = await User.findOne({ email });
+        const user = await User.findOne({ email }).select("-__v");
         
     
         if (user && (await bcrypt.compare(password, user.password))) {
@@ -155,10 +155,25 @@ router.post("/api/login", async (req, res) => {
                 maxAge: 5 * 60 * 60 * 1000 // 5 hours
             })
     
-            
-            return res.status(200).json(user);
+
+            const userWithoutPassword = {
+                _id: user._id,
+                firstName: user.firstName,
+                lastName: user.lastName,
+                email: user.email,
+                phone: user.phone,
+                profession: user.profession,
+                rating: user.rating,
+                isMentor: user.isMentor,
+                isEmailConfirmed: user.isEmailConfirmed,
+                isVerified: user.isVerified,
+                description: user.description,
+                category: user.category
+            };
+
+            return res.status(200).json(userWithoutPassword);
         }
-        return res.status(400).send("Invalid Credentials");
+        return res.status(400).json({ message: "Wrong Credentials"});
     } catch (error) {
         return res.status(400).json({ message: "something wrong"})
     }    
