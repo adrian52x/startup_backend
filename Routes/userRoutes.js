@@ -71,6 +71,21 @@ router.get("/api/mentor/:id", async (req, res) => {
     }
 });
 
+// Assert - user exists by email
+router.post("/api/userExists", async (req, res) => {
+    try {
+        const { email } = req.body; 
+
+      const user = await User.findOne({ email: email });
+      if (!user) {
+        return res.status(200).json({value: false});
+      }
+      res.status(200).json({value: true});
+    } catch (error) {
+      res.status(400).json({ message: "Something went wrong, please try again." });
+    }
+});
+
 // Get all users
 router.get("/api/users", async (req, res) => {
     try {
@@ -87,10 +102,10 @@ router.post("/api/register", async (req, res) => {
     // Our register logic starts here
    try {
         // Get user input
-        const { firstName, lastName, email, password } = req.body;
+        const { firstName, lastName, email, password, img } = req.body;
 
         // Validate user input
-        if (!(firstName && lastName && email && password )) {
+        if (!(firstName && lastName && email )) {
             return res.status(400).send("All input are required");
         }
 
@@ -109,14 +124,18 @@ router.post("/api/register", async (req, res) => {
         } 
  
         //Encrypt user password
-        const encryptedUserPassword = await bcrypt.hash(password, 10);
+        let encryptedUserPassword = null;
+        if (password){
+            encryptedUserPassword = await bcrypt.hash(password, 10);
+        }
 
         // Create user in our database
         const user = await User.create({
             firstName: firstName,
             lastName: lastName,
             email: email.toLowerCase(), // sanitize,
-            password: encryptedUserPassword
+            password: encryptedUserPassword,
+            img: img ? img : null
         });
 
         // return new user
@@ -126,7 +145,8 @@ router.post("/api/register", async (req, res) => {
         if (error.code === 11000 && error.keyValue.email) {
             // Custom response for duplicate email
             res.status(400).json({ error: 'Email already exists' });
-        } else {    
+        } else {  
+            console.log(error);  
             return res.status(500).json({ message: 'Failed to register user', error });
         }
     }    
@@ -144,16 +164,16 @@ router.post("/api/login", async (req, res) => {
         }
         // Validate if user exist in our database
         const user = await User.findOne({ email }).select("-__v");
-        
+
     
         if (user && (await bcrypt.compare(password, user.password))) {
             // Create token
-            const token = jwt.sign({ userId: user._id, email, isMentor: user.isMentor }, process.env.SECRET_KEY, { expiresIn: "5h"});
+            //const token = jwt.sign({ userId: user._id, email, isMentor: user.isMentor }, process.env.SECRET_KEY, { expiresIn: "5h"});
 
             // create cookie
-            res.cookie('jwt52x', token, {
-                maxAge: 5 * 60 * 60 * 1000 // 5 hours
-            })
+            // res.cookie('jwt52x', token, {
+            //     maxAge: 5 * 60 * 60 * 1000 // 5 hours
+            // })
     
 
             const userWithoutPassword = {
