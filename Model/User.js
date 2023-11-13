@@ -14,7 +14,8 @@ const userSchema = new Schema({
     isEmailConfirmed: { type: Boolean, default: null },
     isVerified: { type: Boolean, default: null },
     description: { type: String, default: null },
-    img: { type: String, default: null }
+    img: { type: String, default: null },
+    registerMethod: { type: String, default: "credentials" },
     // video
 });
 
