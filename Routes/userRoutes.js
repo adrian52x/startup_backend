@@ -167,7 +167,7 @@ router.post("/api/register-oauth", async (req, res) => {
     // Our register logic starts here
    try {
         // Get user input
-        const { firstName, lastName, email, img } = req.body;
+        const { firstName, lastName, email } = req.body;
 
         // Validate user input
         if (!(firstName && lastName && email )) {
@@ -195,7 +195,6 @@ router.post("/api/register-oauth", async (req, res) => {
             lastName: lastName,
             email: email.toLowerCase(), // sanitize,
             password: null,
-            img: img ? img : null,
             registerMethod: "oauth"
         });
 

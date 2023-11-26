@@ -16,6 +16,7 @@ const userSchema = new Schema({
     description: { type: String, default: null },
     img: { type: String, default: null },
     registerMethod: { type: String, default: "credentials" },
+    price: { type: Number, default: null }
     // video
 });
 
