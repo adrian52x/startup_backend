@@ -97,9 +97,23 @@ router.get("/api/users", async (req, res) => {
 });
 
 // Get user by email
-router.get("/api/user/:email", async (req, res) => {
+router.get("/api/user/email/:email", async (req, res) => {
     try {
       const user = await User.findOne({ email: req.params.email}).select("-__v");
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
+      res.status(200).json(user);
+    } catch (error) {
+      res.status(400).json({ message: "Something went wrong, please try again." });
+    }
+});
+
+// Get user by ID
+router.get("/api/user/id/:id", async (req, res) => {
+    try {
+      const user = await User.findOne({ _id: req.params.id}).select("-__v");
+      console.log(user);
       if (!user) {
         return res.status(404).json({ message: "User not found" });
       }
@@ -273,26 +287,26 @@ router.post("/api/logout", async (req, res) => {
 });
 
 // Current user by token
-router.get("/api/user", async (req, res) => {
-    try {
-        const cookie = req.cookies['jwt52x']
+// router.get("/api/user", async (req, res) => {
+//     try {
+//         const cookie = req.cookies['jwt52x']
         
 
-        const credentials = jwt.verify(cookie, process.env.SECRET_KEY)
+//         const credentials = jwt.verify(cookie, process.env.SECRET_KEY)
 
-        const user = await User.findOne({ _id: credentials.userId })
+//         const user = await User.findOne({ _id: credentials.userId })
 
-        // pass data without password
-        const {password, ...data} = user.toJSON()
+//         // pass data without password
+//         const {password, ...data} = user.toJSON()
 
         
 
-        return res.status(200).json(data);
+//         return res.status(200).json(data);
 
-    } catch (error) {
-        return res.status(401).json({ message: 'Unauthenticated', error })
-    }
-});
+//     } catch (error) {
+//         return res.status(401).json({ message: 'Unauthenticated', error })
+//     }
+// });
 
 
 export default router;
