@@ -130,6 +130,29 @@ router.post("/api/meetings", async (req, res) => {
     }
   });
 
+  // Accept a meeting
+router.put("/api/meetings/accept", async (req, res) => {
+  try {
+      let { meetingId, link, note } = req.body;
+      
+      const meetingData = {
+          meetingLink: link,
+          note: note,
+          status: 'accepted',
+      };
+      
+      const meeting = await Meeting.findByIdAndUpdate(meetingId, meetingData, { new: true });
+
+      if (!meeting) {
+          return res.status(404).json({ message: 'Meeting not found' });
+      }
+
+      return res.status(200).json(meeting);
+  } catch (error) {
+    return res.status(500).json({ message: 'Failed to accept meeting', error });
+  }
+});
+
 
 
 export default router;

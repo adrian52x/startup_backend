@@ -7,6 +7,8 @@ const meetingSchema = new mongoose.Schema({
   time: { type: String, required: true },
   date: { type: Date, required: true },
   status: { type: String, enum: ['pending', 'accepted', 'declined'], required: true },
+  meetingLink: {type: String, default: null},
+  note: { type: String, default: null },
 });
 
 
