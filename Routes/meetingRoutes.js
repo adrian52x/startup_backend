@@ -68,6 +68,8 @@ router.get("/api/meetings", async (req, res) => {
             time: 1,
             date: 1,
             status: 1,
+            meetingLink: 1,
+            note: 1,
             'sender._id': 1,
             'sender.firstName': 1,
             'sender.lastName': 1,
