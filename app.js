@@ -74,6 +74,12 @@ connectToDatabase();
 
 
 
-app.listen(process.env.PORT, backendIP, () => {
- console.log(`Server running: ${backendIP} : ${process.env.PORT}, Environment: ${process.env.NODE_ENV}`);
+// app.listen(process.env.PORT, backendIP, () => {
+//  console.log(`Server running: ${backendIP} : ${process.env.PORT}, Environment: ${process.env.NODE_ENV}`);
+// });
+
+const port = process.env.PORT || 3000;
+
+app.listen(port, () => {
+ console.log(`Server running on port: ${port}, Environment: ${process.env.NODE_ENV}`);
 });
