@@ -15,17 +15,17 @@ import userRouter from "./Routes/userRoutes.js";
 import meetingRouter from "./Routes/meetingRoutes.js";
 
 
-let mongoURL;
+const mongoURL = process.env.MONGO_URL;
 let frontendIP;
 let backendIP;
 
 
 if (process.env.NODE_ENV.trim() === 'production') {
-  mongoURL = process.env.MONGO_PROD_URL;
+
   frontendIP = process.env.PROD_FRONTEND_IP;
   backendIP = process.env.PROD_BACKEND_IP;
 } else {
-  mongoURL = process.env.MONGO_DEV_URL;
+
   frontendIP = process.env.DEV_FRONTEND_IP;
   backendIP = process.env.DEV_BACKEND_IP;
 
