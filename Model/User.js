@@ -9,6 +9,8 @@ const userSchema = new Schema({
     phone: { type: Number, default: null }, // required ??
     profession: { type: String, default: null }, // required???
     category: { type: [String], default: null },
+    studies: { type: [String], default: null },
+    company: { type: String, default: null },
     rating: { type: Number, default: null },
     isMentor: { type: Boolean, default: false },
     isEmailConfirmed: { type: Boolean, default: null },

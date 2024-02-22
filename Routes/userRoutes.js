@@ -50,7 +50,7 @@ router.get("/api/mentors", async (req, res) => {
         if (category) {
             query.category = { $in: [category] };
         }
-        console.log(query);
+        //console.log(query);
         const mentors = await User.find(query).select("-__v");
         res.status(200).json(mentors) 
     } catch (error) {
